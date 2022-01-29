@@ -42,12 +42,13 @@ rem nircmd.exe win hide ititle "Wifi Toggler"
 setlocal EnableExtensions EnableDelayedExpansion
 
 set wifi="Wi-Fi 2"
-set ontime="11:00:00.0"
-set offtime="01:00:00.0"
+set "ontime=11:00:00.0"
+set "offtime=01:00:00.0"
 
 rem infinite loop
 for /L %%n in (1,0,10) do (
-	set currentTime=!TIME!
+	set "currentTime=!Time: =0!"
+	echo !currentTime!
 	IF not defined last_task (
 		IF !currentTime! geq  %offtime% (
 			IF !currentTime! lss %ontime% (
