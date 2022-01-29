@@ -48,7 +48,7 @@ set "offtime=01:00:00.0"
 rem infinite loop
 for /L %%n in (1,0,10) do (
 	set "currentTime=!Time: =0!"
-	echo !currentTime!
+	rem echo !currentTime!
 	IF not defined last_task (
 		IF !currentTime! geq  %offtime% (
 			IF !currentTime! lss %ontime% (
