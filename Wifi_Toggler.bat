@@ -50,16 +50,16 @@ for /L %%n in (1,0,10) do (
 	set "currentTime=!Time: =0!"
 	rem echo !currentTime!
 	IF not defined last_task (
-		IF !currentTime! geq  %offtime% (
+		IF !currentTime! geq %offtime% (
 			IF !currentTime! lss %ontime% (
 				netsh interface set interface %wifi% disable
 				set "last_task=disable"
 				echo !currentTime! Wifi !last_task!d
-				) ELSE (
-					netsh interface set interface %wifi% enable
-					set "last_task=enable"
-					echo !currentTime! Wifi !last_task!d
-					)
+			) ELSE (
+				netsh interface set interface %wifi% enable
+				set "last_task=enable"
+				echo !currentTime! Wifi !last_task!d
+			)
 		) ELSE (
 			netsh interface set interface %wifi% enable
 			set "last_task=enable"
