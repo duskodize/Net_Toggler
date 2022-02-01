@@ -41,6 +41,11 @@ rem nircmd.exe win hide ititle "Net Toggler"
 
 setlocal EnableExtensions EnableDelayedExpansion
 
+rem variables:
+rem net=name of the network adaptor.
+rem ontime= When network should be turned off.
+rem offtime= When network should be turned on.
+
 set net="Wi-Fi 2"
 set "ontime=11:00:00.0"
 set "offtime=01:00:00.0"
