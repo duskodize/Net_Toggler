@@ -17,9 +17,9 @@ REM BFCPEVERCOPYRIGHT=Copyright Info
 REM BFCPEOPTIONEND
 @ECHO ON
 @echo off
-rem this script toggle wifi adaptor on specefied times
+rem this script toggle a network adaptor on specefied times
 
-title "Wifi Toggler"
+title "Net Toggler"
 
 
 rem running the script as admin
@@ -36,12 +36,12 @@ rem :gotAdmin
 rem IF exist "%temp%\getadmin.vbs" ( del "%temp%\getadmin.vbs" )
 
 rem hiding program window
-rem nircmd.exe win hide ititle "Wifi Toggler"
+rem nircmd.exe win hide ititle "Net Toggler"
 
 
 setlocal EnableExtensions EnableDelayedExpansion
 
-set wifi="Wi-Fi 2"
+set net="Wi-Fi 2"
 set "ontime=11:00:00.0"
 set "offtime=01:00:00.0"
 
@@ -52,40 +52,40 @@ for /L %%n in (1,0,10) do (
 	IF not defined last_task (
 		IF !currentTime! geq %offtime% (
 			IF !currentTime! lss %ontime% (
-				netsh interface set interface %wifi% disable
+				netsh interface set interface %net% disable
 				set "last_task=disable"
-				echo !currentTime! Wifi !last_task!d
+				echo !currentTime! %net% !last_task!d
 			) ELSE (
-				netsh interface set interface %wifi% enable
+				netsh interface set interface %net% enable
 				set "last_task=enable"
-				echo !currentTime! Wifi !last_task!d
+				echo !currentTime! %net% !last_task!d
 			)
 		) ELSE (
-			netsh interface set interface %wifi% enable
+			netsh interface set interface %net% enable
 			set "last_task=enable"
-			echo !currentTime! Wifi !last_task!d
+			echo !currentTime! %net% !last_task!d
 		)
 	)
 	
 	IF !last_task!==disable (
 		IF !currentTime! lss  %offtime% (
-			netsh interface set interface %wifi% enable
+			netsh interface set interface %net% enable
 			set "last_task=enable"
-			echo !currentTime! Wifi !last_task!d
+			echo !currentTime! %net% !last_task!d
 		)
 		IF !currentTime! gtr  %ontime% (
-			netsh interface set interface %wifi% enable
+			netsh interface set interface %net% enable
 			set "last_task=enable"
-			echo !currentTime! Wifi !last_task!d
+			echo !currentTime! %net% !last_task!d
 		) 
 	)
   
 	IF !last_task!==enable (
 		IF !currentTime! geq  %offtime% ( 
 			IF !currentTime! lss %ontime% (
-				netsh interface set interface %wifi% disable
+				netsh interface set interface %net% disable
 				set "last_task=disable" 
-				echo !currentTime! Wifi !last_task!d
+				echo !currentTime! %net% !last_task!d
 			)
 		)
 	)
