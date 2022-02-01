@@ -17,7 +17,7 @@ REM BFCPEVERCOPYRIGHT=Copyright Info
 REM BFCPEOPTIONEND
 @ECHO ON
 @echo off
-rem this script toggle a network adaptor on specefied times
+rem This script toggle a network adaptor on specefied times
 
 title "Net Toggler"
 
@@ -42,7 +42,7 @@ rem nircmd.exe win hide ititle "Net Toggler"
 setlocal EnableExtensions EnableDelayedExpansion
 
 rem variables:
-rem net=name of the network adaptor.
+rem net= Name of the network adaptor.
 rem ontime= When network should be turned off.
 rem offtime= When network should be turned on.
 
