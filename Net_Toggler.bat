@@ -43,20 +43,20 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 rem variables:
 rem net = Name of the network adaptor.
-rem ontime = When network should be turned on.
-rem offtime = When network should be turned off.
+rem onTime = When network should be turned on.
+rem offTime = When network should be turned off.
 
 set net="Wi-Fi 2"
-set "ontime=11:00:00.0"
-set "offtime=01:00:00.0"
+set "onTime=11:00:00.0"
+set "offTime=01:00:00.0"
 
 rem infinite loop
 for /L %%n in (1,0,10) do (
 	set "currentTime=!Time: =0!"
 	rem echo !currentTime!
 	IF not defined last_task (
-		IF !currentTime! geq %offtime% (
-			IF !currentTime! lss %ontime% (
+		IF !currentTime! geq %offTime% (
+			IF !currentTime! lss %onTime% (
 				netsh interface set interface %net% disable
 				set "last_task=disable"
 				echo !currentTime! %net% !last_task!d
@@ -73,12 +73,12 @@ for /L %%n in (1,0,10) do (
 	)
 	
 	IF !last_task!==disable (
-		IF !currentTime! lss  %offtime% (
+		IF !currentTime! lss  %offTime% (
 			netsh interface set interface %net% enable
 			set "last_task=enable"
 			echo !currentTime! %net% !last_task!d
 		)
-		IF !currentTime! gtr  %ontime% (
+		IF !currentTime! gtr  %onTime% (
 			netsh interface set interface %net% enable
 			set "last_task=enable"
 			echo !currentTime! %net% !last_task!d
@@ -86,8 +86,8 @@ for /L %%n in (1,0,10) do (
 	)
   
 	IF !last_task!==enable (
-		IF !currentTime! geq  %offtime% ( 
-			IF !currentTime! lss %ontime% (
+		IF !currentTime! geq  %offTime% ( 
+			IF !currentTime! lss %onTime% (
 				netsh interface set interface %net% disable
 				set "last_task=disable" 
 				echo !currentTime! %net% !last_task!d
