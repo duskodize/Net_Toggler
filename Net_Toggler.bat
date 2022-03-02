@@ -1,8 +1,8 @@
 @ECHO OFF
 REM BFCPEOPTIONSTART
 REM Advanced BAT to EXE Converter www.BatToExeConverter.com
-REM BFCPEEXE=
-REM BFCPEICON=Net_Toggler.ico
+REM BFCPEEXE=Net_Toggler.exe
+REM BFCPEICON=D:\Software\Programming\BAT\Net_Toggler.ico
 REM BFCPEICONINDEX=-1
 REM BFCPEEMBEDDISPLAY=0
 REM BFCPEEMBEDDELETE=1
@@ -45,6 +45,7 @@ rem variables:
 rem net = Name of the network adaptor.
 rem onTime = When network should be turned on.
 rem offTime = When network should be turned off.
+rem time should be in 24 hour format: "%H:%M:%S.%2N"
 
 set net="Wi-Fi 2"
 set "onTime=11:00:00.0"
@@ -55,43 +56,87 @@ for /L %%n in (1,0,10) do (
 	set "currentTime=!Time: =0!"
 	rem echo !currentTime!
 	IF not defined last_task (
-		IF !currentTime! geq %offTime% (
-			IF !currentTime! lss %onTime% (
-				netsh interface set interface %net% disable
-				set "last_task=disable"
-				echo !currentTime! %net% !last_task!d
+		IF %offTime% lss %onTime% (
+			IF !currentTime! geq %offTime% (
+				IF !currentTime! lss %onTime% (
+					netsh interface set interface %net% disable
+					set "last_task=disable"
+					echo !currentTime! %net% !last_task!d
+				) ELSE (
+					netsh interface set interface %net% enable
+					set "last_task=enable"
+					echo !currentTime! %net% !last_task!d
+				)
 			) ELSE (
 				netsh interface set interface %net% enable
 				set "last_task=enable"
 				echo !currentTime! %net% !last_task!d
 			)
-		) ELSE (
-			netsh interface set interface %net% enable
-			set "last_task=enable"
-			echo !currentTime! %net% !last_task!d
+		)
+		IF %offTime% gtr %onTime% (
+			IF !currentTime! geq %onTime% (
+				IF !currentTime! lss %offTime% (
+					netsh interface set interface %net% enable
+					set "last_task=enable"
+					echo !currentTime! %net% !last_task!d
+				) ELSE (
+					netsh interface set interface %net% disable
+					set "last_task=disable"
+					echo !currentTime! %net% !last_task!d
+				)
+			) ELSE (
+				netsh interface set interface %net% disable
+				set "last_task=disable"
+				echo !currentTime! %net% !last_task!d
+			)
 		)
 	)
 	
 	IF !last_task!==disable (
-		IF !currentTime! lss  %offTime% (
-			netsh interface set interface %net% enable
-			set "last_task=enable"
-			echo !currentTime! %net% !last_task!d
+		IF %offTime% lss %onTime% (
+			IF !currentTime! lss %offTime% (
+				netsh interface set interface %net% enable
+				set "last_task=enable"
+				echo !currentTime! %net% !last_task!d
+			)
+			IF !currentTime! gtr %onTime% (
+				netsh interface set interface %net% enable
+				set "last_task=enable"
+				echo !currentTime! %net% !last_task!d
+			) 
 		)
-		IF !currentTime! gtr  %onTime% (
-			netsh interface set interface %net% enable
-			set "last_task=enable"
-			echo !currentTime! %net% !last_task!d
-		) 
+		IF %offTime% gtr %onTime% (
+			IF !currentTime! gtr %onTime% (
+				IF !currentTime! lss %offTime% (
+					netsh interface set interface %net% enable
+					set "last_task=enable"
+					echo !currentTime! %net% !last_task!d
+				)
+			)
+		)
 	)
   
 	IF !last_task!==enable (
-		IF !currentTime! geq  %offTime% ( 
+		IF %offTime% lss %onTime% (
+			IF !currentTime! geq %offTime% ( 
+				IF !currentTime! lss %onTime% (
+					netsh interface set interface %net% disable
+					set "last_task=disable" 
+					echo !currentTime! %net% !last_task!d
+				)
+			)
+		)
+		IF %offTime% gtr %onTime% (
 			IF !currentTime! lss %onTime% (
 				netsh interface set interface %net% disable
-				set "last_task=disable" 
+				set "last_task=disable"
 				echo !currentTime! %net% !last_task!d
 			)
+			IF !currentTime! gtr %offTime% (
+				netsh interface set interface %net% disable
+				set "last_task=disable"
+				echo !currentTime! %net% !last_task!d
+			) 
 		)
 	)
 	sleep 5
